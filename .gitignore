@@ -1,12 +1,12 @@
 # created by virtualenv automatically
-.gitignore
+gitignore
 .env/
 venv/
 /.idea/
 /.venv/
 db.sqlite3
-*.log
 
-info.txt
+*.log
+*.txt
 
 

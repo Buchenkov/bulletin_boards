@@ -24,9 +24,9 @@
     {% if request.user.is_authenticated %}
     <h2> Хотите создать свой пост?</h2>
     <a href="{%url 'articles_create'%}"> Добавить пост </a>
+    {% endif %}
 
-    {%endif%}
-    {% if posts %}
+    {% if articles %}
        <table>
            <tr>
                <td>  Обложка </td>
@@ -37,10 +37,10 @@
                <td>  Краткое содержание  </td>
            </tr>
 
-           {% for post in posts %}
+           {% for article in articles %}
            <tr>
-                <td><img src="{{post.content}}" alt="{{post.content}}"> </td>
-               <td> <a href="{% url 'board:post' post.pk  %}"> {{post.title}} </a></td>
+                <td><img src="{{article.content}}" alt="{{article.content}}"> </td>
+               <td> <a href="{% url 'post' article.pk  %}"> {{article.title}} </a></td>
                <td>{{ article.date_time }}</td>
                <td>{{ article.author }}</td>
                <td>{{ article.get_cat_display}}
@@ -54,9 +54,6 @@
                 </td>
                 {%endif%}
            </tr>
-
-
-
            {% endfor %}
     </table>
    <hr/>

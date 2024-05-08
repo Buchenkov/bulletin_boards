@@ -22,7 +22,7 @@
 
 
    <div class="container">
-       <a class="navbar-brand" href="/news/">{% trans "News" %}</a>
+       <a class="navbar-brand" href="/">{% trans "News" %}</a>
        <button class="navbar-toggler" type="button" data-toggle="collapse"
                data-target="#navbarResponsive"
                aria-controls="navbarResponsive" aria-expanded="false"
@@ -31,13 +31,6 @@
        </button>
        <div class="collapse navbar-collapse" id="navbarResponsive">
            <ul class="navbar-nav ml-auto">
-               {% if perms.news.add_post or perms.news.delete_post %}
-               <li class="nav-item active">
-                   <a class="nav-link" href="/news/post_create/">{% trans "News create" %}
-                       <span class="sr-only"></span>
-                   </a>
-               </li>
-               {% endif %}
                {% if perms.news.add_post or perms.news.delete_post %}
                <li class="nav-item">
                    <a class="nav-link" href="/article/articles_create/">{% trans "Articles create" %}</a>
@@ -75,22 +68,6 @@
                         body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};}
                     </style>
 
-
-
-                    {% get_current_timezone as TIME_ZONE %}
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <label for="timezone">Time zone:</label>
-                        <select name="timezone">
-                            {% for tz in timezones %}
-                            <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
-                            {% endfor %}
-                        </select>
-                        <input type="submit" value="Set">
-                    </form>
-
-                    {{ TIME_ZONE }}
-                    {{ current_time|timezone:TIME_ZONE }} <!-- Отображаем время в выбранном часовом поясе  -->
 
                     {% for model in models %}
                     <div class="model-class">

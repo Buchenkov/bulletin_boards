@@ -24,8 +24,8 @@
     {% if request.user.is_authenticated %}
     <h2> Хотите создать свой пост?</h2>
     <a href="{%url 'articles_create'%}"> Добавить пост </a>
+    {% endif %}
 
-    {%endif%}
     {% if articles %}
        <table>
            <tr>
@@ -39,7 +39,7 @@
 
            {% for article in articles %}
            <tr>
-                <td><img src="{{post.content}}" alt="{{post.content}}"> </td>
+                <td><img src="{{article.content}}" alt="{{article.content}}"> </td>
                <td> <a href="{% url 'post' article.pk %}"> {{article.title}} </a></td>
                <td>{{ article.date_time }}</td>
                <td>{{ article.author }}</td>

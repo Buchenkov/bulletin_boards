@@ -148,7 +148,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 
 # ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5    # Ограничение попыток входа в систему
-LOGIN_URL = '/account/login/'
+LOGIN_URL = '/login/'
 # LOGOUT_REDIRECT_URL = '/account/login/'
 LOGIN_REDIRECT_URL = "/"
 
