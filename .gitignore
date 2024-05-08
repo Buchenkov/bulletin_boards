@@ -1,8 +1,10 @@
 # created by virtualenv automatically
+.gitignore
 логирование.txt
 .env/
 venv/
 .idea/
+.venv
 db.sqlite3
 errors.log
 general.log
