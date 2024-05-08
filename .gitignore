@@ -1,0 +1,12 @@
+# created by virtualenv automatically
+логирование.txt
+.env/
+venv/
+.idea/
+db.sqlite3
+errors.log
+general.log
+security.log
+info.txt
+
+
