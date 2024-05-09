@@ -7,13 +7,7 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated %}
-<h3>Добро пожаловать {{user.username}}</h3>
 
-{% else %}
-    <h4>Вы не зарегестрированы!</h4>
-  <a href="{%url 'account:login'%}"> Зарегестрироваться </a>
-{% endif %}
    <h1>Сисок постов за все время</h1>
 
     {% if request.user.is_authenticated %}
@@ -38,7 +32,7 @@
                <td>{{ article.author }}</td>
                 <td>{{ article.category }}</td>
                <td>{{ article.text|truncatewords:20}}</td>
-               {% if perms.change_article %}
+               {% if request.user.is_authenticated %}
                 <td>
                     <a href="{%url 'articles_edit'  article.id%}"> Изменить пост </a>
                 </td>

@@ -19,14 +19,14 @@ from django.urls import path, include
 
 from .views import *
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
     path('', ArticleList.as_view(), name='article'),
     path('article/<int:pk>/', ArticleDetail.as_view(), name='post'),
     path('article/articles_create/', ArticleCreate.as_view(), name='articles_create'),
     path('articles/<int:pk>/edit', ArticleUpdate.as_view(), name='articles_edit'),
     path('article/<int:pk>/delete', ArticleDelete.as_view(), name='article_delete'),
     path('<int:pk>/comment/create/', CommentCreate.as_view(), name='comment_create'),
-    path('accounts/', include('allauth.urls')),
 ]
