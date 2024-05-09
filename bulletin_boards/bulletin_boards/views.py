@@ -7,29 +7,9 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 
 from .filters import NewsFilter
-from .forms import ArticleForm, CommentForm
+from .forms import ArticleForm, CommentForm, EditForm
 # from .forms import PostForm, ArticleForm
 from .models import *
-
-# # Create your views here.
-#
-# class Index(View):
-#     def get(self, request):
-#         # . Translators: This message appears on the home page only
-#         models = Post.objects.all()
-#
-#         context = {
-#             'models': models,
-#             # 'current_time': timezone.localtime(timezone.now()),
-#             # 'timezones': pytz.common_timezones  # добавляем в контекст все доступные часовые пояса
-#         }
-#
-#         return HttpResponse(render(request, 'default.html', context))
-#
-#     # #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
-#     # def post(self, request):
-#     #     request.session['django_timezone'] = request.POST['timezone']
-#     #     return redirect('/')
 
 
 logger = logging.getLogger(__name__)
@@ -38,11 +18,6 @@ logger = logging.getLogger(__name__)
 def index(request):  # при переходе по определённому урлу
     logger.info('INFO')
     return redirect('')
-
-
-# def my_test_500_view(request):
-#     # Return an "Internal Server Error" 500 response code.
-#     return HttpResponse(status=500)
 
 
 class ArticleList(ListView):
@@ -97,16 +72,22 @@ class CommentCreate(CreateView):  # LoginRequireMixin,
         return context
 
 
-class ArticleDetail(CommentCreate, DetailView):
-    permission_required = ('post.add_article',)
-    # Модель всё та же, но мы хотим получать информацию по отдельному товару
+class ArticleDetail(DetailView):
     model = Article
-    # Используем другой шаблон —
-    # post_detail.html
     template_name = 'post.html'
-    # Название объекта, в котором будет выбранный пользователем продукт
-    context_object_name = 'articles'
-    pk_url_kwarg = 'pk'
+    # context_object_name = 'articles'
+
+
+# class ArticleDetail(CommentCreate, DetailView):
+#     permission_required = ('add_article',)
+#     # Модель всё та же, но мы хотим получать информацию по отдельному товару
+#     model = Article
+#     # Используем другой шаблон —
+#     # post_detail.html
+#     template_name = 'post.html'
+#     # Название объекта, в котором будет выбранный пользователем продукт
+#     context_object_name = 'articles'
+#     pk_url_kwarg = 'pk'
 
 
 # class Search(ListView):
@@ -154,7 +135,7 @@ class ArticleDetail(CommentCreate, DetailView):
 
 
 class ArticleCreate(LoginRequiredMixin, CreateView):
-    permission_required = ('articles_create.add_article',)
+    permission_required = ('add_article',)
     raise_exception = True
     form_class = ArticleForm
     model = Article
@@ -167,24 +148,40 @@ class ArticleCreate(LoginRequiredMixin, CreateView):
     #     return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('post', kwargs={'pk': self.object.pk})
+        return reverse_lazy('article')
 
 
 class ArticleDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = ('article_delete',)
+    permission_required = ('delete_article',)
     model = Article
     template_name = 'article/article_delete.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('article')
 
     def get_success_url(self):
-        return reverse_lazy('')
+        return reverse_lazy('article')
 
 
-class ArticleUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = ('article.change_article',)
-    form_class = ArticleForm
+class ArticleUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = ('bulletin_boards.article_change',)
+    form_class = EditForm
     model = Article
-    template_name = 'article/articles_edit.html'
+    template_name = 'articles_edit.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('article')
+
+# class ArticleUpdate(PermissionRequiredMixin, UpdateView):
+#     permission_required = ('articles.change_article',)
+#     form_class = ArticleForm
+#     model = Article
+#     template_name = 'article/articles_edit.html'
+#
+#     def get_success_url(self):
+#         return reverse_lazy('article')
 
 # class CategoryListView(NewsList):
 #     model = Article

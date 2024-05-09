@@ -17,12 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import ArticleList, ArticleDetail, ArticleCreate, ArticleUpdate, ArticleDelete, CommentCreate
+from .views import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', ArticleList.as_view()),
+    path('', ArticleList.as_view(), name='article'),
     path('article/<int:pk>/', ArticleDetail.as_view(), name='post'),
     path('article/articles_create/', ArticleCreate.as_view(), name='articles_create'),
     path('articles/<int:pk>/edit', ArticleUpdate.as_view(), name='articles_edit'),

@@ -16,35 +16,28 @@
 {% endif %}
    <h1>Сисок постов за все время</h1>
 
-    <form action="" method="get">
-       {{ filterset.form.as_p }}
-       <input type="submit" value="Найти" />
-   </form>
-    <hr/>
     {% if request.user.is_authenticated %}
     <h2> Хотите создать свой пост?</h2>
-    <a href="{%url 'articles_create'%}"> Добавить пост </a>
+    <a href="{%url 'articles_create'%}"> Добавить объявление </a>
     {% endif %}
 
     {% if articles %}
-       <table>
+       <table width="100%" style="margin-top: 35px">
            <tr>
-               <td>  Обложка </td>
-               <td>  Название   </td>
-               <td>  Время публикации   </td>
-               <td>  Автор   </td>
-               <td>  Категория поста  </td>
-               <td>  Краткое содержание  </td>
+               <td><u>  Тема объявления </u></td>
+               <td><u>  Время публикации </u></td>
+               <td> <u> Автор </u></td>
+               <td><u> Категория объявления </u></td>
+               <td><u> Краткое содержание </u></td>
            </tr>
 
            {% for article in articles %}
            <tr>
-                <td><img src="{{article.content}}" alt="{{article.content}}"> </td>
                <td> <a href="{% url 'post' article.pk %}"> {{article.title}} </a></td>
-               <td>{{ article.date_time }}</td>
+               <td>{{ article.post_time }}</td>
                <td>{{ article.author }}</td>
-               <td>{{ article.get_cat_display}}
-               <td>{{ article.text}}</td>
+                <td>{{ article.category }}</td>
+               <td>{{ article.text|truncatewords:20}}</td>
                {% if perms.change_article %}
                 <td>
                     <a href="{%url 'articles_edit'  article.id%}"> Изменить пост </a>
@@ -52,12 +45,10 @@
                 <td>
                     <a href="{%url 'article_delete'  article.id%}"> Удалить пост </a>
                 </td>
-                {%endif%}
+                           {% endif %}
+           {% endfor %}
            </tr>
 
-
-
-           {% endfor %}
     </table>
    <hr/>
    {% else %}

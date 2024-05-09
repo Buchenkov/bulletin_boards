@@ -24,7 +24,7 @@ class Article(models.Model):
     upload = models.FileField(upload_to='uploads/', blank=True)
 
     def __str__(self):
-        return f'{self.title}: {self.text[:20]}'
+        return f'author - {self.author}: title - {self.title}; text - {self.text[:20]}; category - {self.category}'
 
     def get_absolute_url(self):
         return reverse('article', args=[str(self.id)])

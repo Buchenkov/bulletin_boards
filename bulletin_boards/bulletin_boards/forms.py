@@ -4,6 +4,18 @@ from django.core.exceptions import ValidationError
 from .models import *
 
 
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'text', 'category']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
 class ArticleForm(forms.ModelForm):
     # text = forms.CharField(min_length=20)
     class Meta:

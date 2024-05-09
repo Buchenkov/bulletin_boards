@@ -1,66 +1,22 @@
 {% extends 'flatpages/default.html' %}
 
-{% block title %}
-Посты участников за все время
-{% endblock title %}
-
-
 {% block content %}
-
-{% if request.user.is_authenticated %}
-<h3>Добро пожаловать {{user.username}}</h3>
-
+{% if article %}
+<table width="100%" style="margin-top: 35px">
+    <tr>
+        <td><u>Время публикации</u></td>
+        <td><u>Автор</u></td>
+        <td><u>Категория Объявления</u></td>
+        <td><u>Объявление</u></td>
+    </tr>
+    <tr>
+        <td>{{ article.post_time }}</td>
+        <td>{{ article.author }}</td>
+        <td>{{ article.category }}</td>
+        <td>{{ article.text }}</td>
+    </tr>
+</table>
 {% else %}
-    <h4>Вы не зарегестрированы!</h4>
-  <a href="{%url 'users:signup'%}"> Зарегестрироваться </a>
+<h3>"There are no publications!""</h3>
 {% endif %}
-   <h1>Сисок постов за все время</h1>
-
-    <form action="" method="get">
-       {{ filterset.form.as_p }}
-       <input type="submit" value="Найти" />
-   </form>
-    <hr/>
-    {% if request.user.is_authenticated %}
-    <h2> Хотите создать свой пост?</h2>
-    <a href="{%url 'articles_create'%}"> Добавить пост </a>
-    {% endif %}
-
-    {% if articles %}
-       <table>
-           <tr>
-               <td>  Обложка </td>
-               <td>  Название   </td>
-               <td>  Время публикации   </td>
-               <td>  Автор   </td>
-               <td>  Категория поста  </td>
-               <td>  Краткое содержание  </td>
-           </tr>
-
-           {% for article in articles %}
-           <tr>
-                <td><img src="{{article.content}}" alt="{{article.content}}"> </td>
-               <td> <a href="{% url 'post' article.pk  %}"> {{article.title}} </a></td>
-               <td>{{ article.date_time }}</td>
-               <td>{{ article.author }}</td>
-               <td>{{ article.get_cat_display}}
-               <td>{{ article.text}}</td>
-               {% if perms.change_article %}
-                <td>
-                    <a href="{%url 'articles_edit'  article.id%}"> Изменить пост </a>
-                </td>
-                <td>
-                    <a href="{%url 'article_delete'  article.id%}"> Удалить пост </a>
-                </td>
-                {%endif%}
-           </tr>
-           {% endfor %}
-    </table>
-   <hr/>
-   {% else %}
-       <h2>Постов нет!</h2>
-   {% endif %}
-
 {% endblock content %}
-
-
