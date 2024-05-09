@@ -1,6 +1,8 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from django.urls import reverse
+
+from bulletin_boards import settings
 
 
 class Article(models.Model):
@@ -16,7 +18,7 @@ class Article(models.Model):
         ('potion', 'Зельевары'),
         ('spellmaster', 'Мастера заклинаний'),
     )
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     text = models.TextField()   # !
     category = models.CharField(max_length=20, choices=TYPE, default='tank')
@@ -28,6 +30,11 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article', args=[str(self.id)])
+
+
+class User(AbstractUser):
+    code = models.CharField(max_length=15, blank=True, null=True)
+
 
 
 class UserResponse(models.Model):

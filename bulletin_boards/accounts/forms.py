@@ -1,5 +1,9 @@
+import random
+from string import hexdigits
+
 from allauth.account.forms import SignupForm
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.core.mail import EmailMultiAlternatives
@@ -44,11 +48,11 @@ class CustomSignupForm(SignupForm):     # форма регистрации
 #         # )
 #
 #         # вар_2
-        subject = 'Добро пожаловать на наш новостной портал!'
+        subject = 'Добро пожаловать на наш портал!'
         text = f'{user.username}, вы успешно зарегистрировались на сайте!'
         html = (
             f'<b>{user.username}</b>, вы успешно зарегистрировались на '
-            f'<a href="http://127.0.0.1:8000/news">сайте</a>!'
+            f'<a href="http://127.0.0.1:8000/">сайте</a>!'
         )
         msg = EmailMultiAlternatives(
             subject=subject, body=text, from_email=None, to=[user.email]
@@ -65,6 +69,22 @@ class CustomSignupForm(SignupForm):     # форма регистрации
         #     message=f'Пользователь {user.username} зарегистрировался на сайте.'
         # )
 
+        return user
+
+
+class CommonSignupForm(SignupForm):
+    def save(self, request):
+        user = super(CommonSignupForm, self).save(request)
+        user.id_active = False
+        code = ''.join(random.sample(hexdigits, 5))
+        user.code = code
+        user.save()
+        send_mail(
+            subject=f'Код активации',
+            message=f'Код активации аккаунта: {code}',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+        )
         return user
 
 

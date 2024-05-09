@@ -23,6 +23,7 @@
                <td> <u> Автор </u></td>
                <td><u> Категория объявления </u></td>
                <td><u> Краткое содержание </u></td>
+               <td><u> Действия </u></td>
            </tr>
 
            {% for article in articles %}
@@ -31,7 +32,7 @@
                <td>{{ article.post_time }}</td>
                <td>{{ article.author }}</td>
                 <td>{{ article.category }}</td>
-               <td>{{ article.text|truncatewords:20}}</td>
+               <td>{{ article.text|truncatewords:15}}</td>
                {% if request.user.is_authenticated %}
                 <td>
                     <a href="{%url 'articles_edit'  article.id%}"> Изменить пост </a>

@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'accounts',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.yandex',  # отвечает за выход через Yandex
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.yandex',  # отвечает за выход через Yandex
 ]
 
 SITE_ID = 1
@@ -148,27 +148,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 
 # ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5    # Ограничение попыток входа в систему
-LOGIN_URL = '/login/'
-# LOGOUT_REDIRECT_URL = '/account/login/'
-LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = 'account_login'   # '/login/'
+LOGOUT_REDIRECT_URL = 'profile'   # '/'
+LOGIN_REDIRECT_URL = 'account_login'    # '/'
 
 # # Первые два параметра указывают на то, что поле email является обязательным и уникальным. Третий, наоборот, — говорит,
 # # что username необязательный. Следующий параметр указывает, что аутентификация будет происходить посредством
 # # электронной почты. Напоследок мы указываем, что верификация почты отсутствует.
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_UNIQUE_EMAIL = True
-# ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'none'
 # # mandatory — не пускать пользователя на сайт до момента подтверждения почты;
 # # optional — сообщение о подтверждении почты будет отправлено, но пользователь может залогиниться на сайте без подтверждения почты.
-# ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
 # ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # позволит избежать дополнительного входа и активирует аккаунт сразу,
 # # как только мы перейдём по ссылке.
 # ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7  # хранит количество дней, когда доступна ссылка на подтверждение регистрации
+AUTH_USER_MODEL = 'bulletin_boards.User'    # разобраться
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # который просто напечатает его в консоли.
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # который просто напечатает его в консоли.
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "igorchan"
