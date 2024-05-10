@@ -123,6 +123,7 @@ class ArticleUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 class ConfirmUser(UpdateView):
     model = User
     context_object_name = 'confirm_user'
+    # success_url = '/accounts/login/'
 
     def post(self, request, *args, **kwargs):
         if 'code' in request.POST:
@@ -131,9 +132,9 @@ class ConfirmUser(UpdateView):
                 user.update(is_active=True)
                 user.update(code=None)
             else:
-                return render(self.request, 'accounts/invalid_code_html')
+                return render(self.request, 'account/account_inactive.html')
         return redirect('account_login')
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/profile.html'
+    template_name = 'account/profile.html'

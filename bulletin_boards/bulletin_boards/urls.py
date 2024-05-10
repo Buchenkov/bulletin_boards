@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from accounts.views import SignUp
 from .views import *
 
 urlpatterns = [
@@ -31,6 +32,9 @@ urlpatterns = [
     path('articles/<int:pk>/edit', ArticleUpdate.as_view(), name='articles_edit'),
     path('article/<int:pk>/delete', ArticleDelete.as_view(), name='article_delete'),
     path('<int:pk>/comment/create/', CommentCreate.as_view(), name='comment_create'),
+    path('signup/', SignUp.as_view(), name='signup'),
+    path('confirm/', ConfirmUser.as_view(), name='confirm_user'),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]
 
 if settings.DEBUG:

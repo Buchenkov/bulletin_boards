@@ -1,8 +1,10 @@
 from allauth.account.forms import LoginForm
 from allauth.account.views import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
+from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth import login, authenticate, logout
 from .forms import SignUpForm
 from django.contrib import messages

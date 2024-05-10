@@ -72,7 +72,7 @@ class SignUpForm(UserCreationForm):
 class CommonSignupForm(SignupForm):
     def save(self, request):
         user = super(CommonSignupForm, self).save(request)
-        user.id_active = False
+        user.is_active = False
         code = ''.join(random.sample(hexdigits, 5))
         user.code = code
         user.save()
