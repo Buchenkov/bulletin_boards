@@ -7,7 +7,8 @@ from .models import *
 class EditForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'text', 'category']
+        fields = '__all__'  # все пункты
+        # fields = ['title', 'text', 'category']
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
@@ -20,13 +21,13 @@ class ArticleForm(forms.ModelForm):
     # text = forms.CharField(min_length=20)
     class Meta:
         model = Article
-        # fields = '__all__'  # все пункты
-        fields = [
-            'author',
-            'category',
-            'title',
-            'text',
-        ]
+        fields = '__all__'  # все пункты
+        # fields = [
+        #     'author',
+        #     'category',
+        #     'title',
+        #     'text',
+        # ]
         # print(fields)
 
     def clean(self):

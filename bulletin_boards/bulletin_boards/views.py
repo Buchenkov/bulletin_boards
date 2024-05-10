@@ -1,5 +1,6 @@
 import logging
 
+import form
 # import pytz
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -84,6 +85,10 @@ class ArticleCreate(LoginRequiredMixin, CreateView):
     model = Article
     template_name = 'article/articles_create.html'
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('article')
 
@@ -103,6 +108,8 @@ class ArticleUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = EditForm
     model = Article
     template_name = 'articles_edit.html'
+    # fp = Article(file=form.clened_data['data'])
+    # fp.save()
 
     def form_valid(self, form):
         post = form.save(commit=False)

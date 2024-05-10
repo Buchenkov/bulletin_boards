@@ -65,6 +65,9 @@ ROOT_URLCONF = 'bulletin_boards.urls'
 
 # ROOT_URLCONF = 'project.urls'
 
+MEDIA_ROOT = BASE_DIR / 'uploads'
+MEDIA_URL = '/uploads/'
+
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]
@@ -148,9 +151,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 
 # ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5    # Ограничение попыток входа в систему
-LOGIN_URL = 'account_login'   # '/login/'
-LOGOUT_REDIRECT_URL = 'profile'   # '/'
-LOGIN_REDIRECT_URL = 'account_login'    # '/'
+LOGIN_URL = 'account_login'             # '/login/'
+LOGIN_REDIRECT_URL = 'profile'          # '/'
+LOGOUT_REDIRECT_URL = 'account_login'   # '/'
 
 # # Первые два параметра указывают на то, что поле email является обязательным и уникальным. Третий, наоборот, — говорит,
 # # что username необязательный. Следующий параметр указывает, что аутентификация будет происходить посредством
@@ -162,7 +165,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'none'
 # # mandatory — не пускать пользователя на сайт до момента подтверждения почты;
 # # optional — сообщение о подтверждении почты будет отправлено, но пользователь может залогиниться на сайте без подтверждения почты.
-ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+ACCOUNT_FORMS = {'signup': 'accounts.forms.CommonSignupForm'}
 # ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # позволит избежать дополнительного входа и активирует аккаунт сразу,
 # # как только мы перейдём по ссылке.
 # ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7  # хранит количество дней, когда доступна ссылка на подтверждение регистрации
@@ -176,7 +179,7 @@ EMAIL_HOST_USER = "igorchan"
 EMAIL_HOST_PASSWORD = "jwitospiqdwbrxpf"
 # EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_SUBJECT_PREFIX = ['NewsPortal']
+EMAIL_SUBJECT_PREFIX = ['Bulletin boards']
 DEFAULT_FROM_EMAIL = "igorchan@yandex.ru"
 
 SERVER_EMAIL = "igorchan@yandex.ru"
