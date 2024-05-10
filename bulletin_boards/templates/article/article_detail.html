@@ -1,0 +1,53 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+{{ article.title }}
+{% endblock title %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+{% if post %}
+<table width="100%" style="margin-top: 35px">
+    <tr>
+        <td><u>{% trans "Heading" %}</u></td>
+        <td><u>{% trans "Date" %}</u></td>
+        <td><u>{% trans "Content" %}</u></td>
+        <td><u>{% trans "Rating" %}</u></td>
+        <td><u>{% trans "Category" %}</u></td>
+    </tr>
+    <tr>
+        <td>{{ article.title }}</td>
+        <td>{{ article.post_time|date:'d M Y' }}</td>
+        <td>{{ article.text|censor}}</td>     <!--|censor-->
+        <td>{{ article.rating }}</td>
+        {% for cat in post.category.all %}
+        <td>{{ cat.category_name }}</td>
+        {% endfor %}
+    </tr>
+</table>
+{% else %}
+<h3>{% trans "There are no publications!" %}"</h3>
+{% endif %}
+
+<form action="{% url 'comment_create' article_id %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Создать отклик">
+</form>
+
+{% if article.comment_set.all %}
+<h4>Все отклики:</h4>
+{% for comment in article.comment_set.all %}
+<p>{{ comment.comment_user.username }}</p>
+<p>{{ comment.text }}</p>
+{% endfor %}
+{% endif %}
+{% if perms.bulletin_boards.add_article %}
+    <br><br><small><button href="{% url 'article_create %}">Добавить новое объявление</button></small>
+
+{% endblock content %}
+
+

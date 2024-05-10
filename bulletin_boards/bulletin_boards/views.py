@@ -86,6 +86,7 @@ class ArticleCreate(LoginRequiredMixin, CreateView):
     template_name = 'article/articles_create.html'
 
     def form_valid(self, form):
+        # user = RegUser().get(user_id=self.request.user.id), Post.objects.filter(user_id=reg_user.id)
         post = form.save(commit=False)
         return super().form_valid(form)
 

@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms import ClearableFileInput
 
 from .models import *
 
@@ -8,12 +9,13 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = '__all__'  # все пункты
-        # fields = ['title', 'text', 'category']
+        # fields = ['title', 'text', 'category', 'upload']
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'text': forms.Textarea(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название объявления'}),
+            'category': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Категория'}),
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст объявления'}),
+            'upload': ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Файлы'}),
         }
 
 

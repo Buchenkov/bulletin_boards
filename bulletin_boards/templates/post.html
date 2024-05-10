@@ -1,0 +1,28 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+{% if article %}
+<table width="100%" style="margin-top: 35px">
+    <tr>
+        <td><u>Время публикации</u></td>
+        <td><u>Автор</u></td>
+        <td><u>Категория Объявления</u></td>
+        <td><u>Объявление</u></td>
+        <td><u>Вложения</u></td>
+
+    </tr>
+    <tr>
+        <td>{{ article.post_time }}</td>
+        <td>{{ article.author }}</td>
+        <td>{{ article.category }}</td>
+        <td>{{ article.text }}</td>
+        <td>{% if article.upload %}
+            <p><img class="img-article-left" src="{{article.upload.url}}"></p>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% else %}
+<h3>"There are no publications!""</h3>
+{% endif %}
+{% endblock content %}

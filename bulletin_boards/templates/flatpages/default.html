@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load i18n %} <!-- Загружаем теги с переводами, без этой строки ничего не будет работать -->
+{% load tz %} <!-- не забываем загрузить тег для работы с часовыми поясами -->
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Bare - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <!-- Core theme CSS (includes Bootstrap)-->
+        {% load static %}   <!--подгружает папку static-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+
+        <!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+
+
+   <div class="container">
+       <a class="navbar-brand" href="/">{% trans "News" %}</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse"
+               data-target="#navbarResponsive"
+               aria-controls="navbarResponsive" aria-expanded="false"
+               aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse" id="navbarResponsive">
+           <ul class="navbar-nav ml-auto">
+               {% if perms.news.add_post or perms.news.delete_post %}
+               <li class="nav-item">
+                   <a class="nav-link" href="/article/articles_create/">{% trans "Articles create" %}</a>
+               </li>
+               {% endif %}
+               {% if user.is_authenticated %}
+               <li class="nav-item">
+                   <a class="nav-link" href="/subscriptions/">{% trans "Subscriptions" %}</a>
+               </li>
+               {% endif %}
+               <li class="nav-item">
+                   <a class="nav-link" href="/search/">{% trans "Search" %}</a>
+               </li>
+       </div>
+       <div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <li class="nav-item"></li>
+                   {% if user.is_authenticated %}
+                    <a class="nav-link" href="http://127.0.0.1:8000/accounts/logout/" style="color:#cc2900">&ensp;  {{ user.get_username }}&ensp;Выход</a>
+                   {% else %}
+                   <li><a class="nav-link" href="{% url 'login'%}?next={{request.path}}"> <table>Вход</table></a></li>
+                    <li><a class="nav-link" href="{% url 'account_signup'%}?next={{request.path}}"> <table>Регистрация</table></a></li>
+                   {% endif %}
+                </li>
+           </ul>
+       </div>
+
+</nav>
+        <!-- Page content-->
+        <div class="container">
+           <div class="row">
+               <div class="col-lg-12 text-center">
+
+                    <!-- Если сейчас больше чем 19 или же меньше 7, то выводим тёмную тему, иначе выводим светлую -->
+                    <style>
+                        body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};}
+                    </style>
+
+
+                    {% for model in models %}
+                    <div class="model-class">
+                        {{ model.name }}
+                    </div>
+                    {% endfor %}
+
+                   {% block title %}
+                    {{ flatpage.title }}
+                    {% endblock title %}
+
+                   {% block content %}
+                       <h2>{{ flatpage.title }}</h2>
+                       {{ flatpage.content }}
+                   {% endblock content %}
+                </ul>
+               </div>
+           </div>
+        </div>
+    </body>
+</html>

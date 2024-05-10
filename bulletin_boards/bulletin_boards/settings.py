@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'accounts',
     'allauth',
     'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.yandex',  # отвечает за выход через Yandex
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.yandex',  # отвечает за выход через Yandex
 ]
 
 SITE_ID = 1
@@ -165,6 +165,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'none'
 # # mandatory — не пускать пользователя на сайт до момента подтверждения почты;
 # # optional — сообщение о подтверждении почты будет отправлено, но пользователь может залогиниться на сайте без подтверждения почты.
+ACCOUNT_FORM = {'signup': 'accounts.forms.CommonSignupForm'}
 ACCOUNT_FORMS = {'signup': 'accounts.forms.CommonSignupForm'}
 # ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # позволит избежать дополнительного входа и активирует аккаунт сразу,
 # # как только мы перейдём по ссылке.
