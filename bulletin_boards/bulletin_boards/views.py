@@ -48,6 +48,7 @@ class ArticleList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        # print(context)
         return context
 
     def article(self, request):
@@ -78,9 +79,9 @@ class ArticleDetail(DetailView):
     # context_object_name = 'articles'
 
 
-class ArticleCreate(LoginRequiredMixin, CreateView):
-    permission_required = ('add_article',)
-    raise_exception = True
+class ArticleCreate(LoginRequiredMixin, CreateView):    # LoginRequiredMixin, PermissionRequiredMixin,
+    permission_required = ('bulletin_boards.add_article',)
+    raise_exception = True  # вместо перенаправлений, можно генерировать страницу с кодом 403 – доступ запрещен.
     form_class = ArticleForm
     model = Article
     template_name = 'article/articles_create.html'
@@ -94,8 +95,8 @@ class ArticleCreate(LoginRequiredMixin, CreateView):
         return reverse_lazy('article')
 
 
-class ArticleDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = ('delete_article',)
+class ArticleDelete(LoginRequiredMixin, DeleteView):
+    permission_required = ('bulletin_boards.delete_article',)
     model = Article
     template_name = 'article/article_delete.html'
     success_url = reverse_lazy('article')
@@ -104,8 +105,8 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
         return reverse_lazy('article')
 
 
-class ArticleUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = ('bulletin_boards.article_change',)
+class ArticleUpdate(LoginRequiredMixin, UpdateView):
+    permission_required = ('bulletin_boards.change_article',)
     form_class = EditForm
     model = Article
     template_name = 'articles_edit.html'

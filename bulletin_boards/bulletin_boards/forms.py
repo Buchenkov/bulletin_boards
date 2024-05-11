@@ -24,13 +24,13 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = '__all__'  # все пункты
-        # fields = [
-        #     'author',
-        #     'category',
-        #     'title',
-        #     'text',
-        # ]
-        # print(fields)
+
+    widgets = {
+        'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название объявления'}),
+        'category': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Категория'}),
+        'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст объявления'}),
+        'upload': ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Файлы'}),
+    }
 
     def clean(self):
         cleaned_data = super().clean()
