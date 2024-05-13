@@ -46,6 +46,7 @@
                         </label>
                         {{form.text}}
                     </div>
+
                     <button type="submit"
                             class="mt-3 btn btn-success btn-block py-3">
                         Отправить
@@ -55,38 +56,22 @@
             <!--  //contact form grid ends here -->
         </div>
     </div>
-{% if articles %}
-<td>{{ article.comment.text }}</td>
-<td>{{ article.category }}</td>
-    {% for comment in comments__article %}
 
+<!--<td>{{ comment.text }}</td>-->
+<!--<td>{{ article.category }}</td>-->
+{% if article.comment_set.all %}
+    {% for comment in article.comment_set.all %}
         <div class="media py-5">
-
             <div class="media-body mt-4">
                 <h5 class="mt-0 editContent">
-                    {{ comments.comment_user }}
+                    {{ comment.comment_user.username }}
                 </h5>
                 <p class="mt-2 editContent">
-                    {{ comments.text }}
+                    {{ comment.text }}
                 </p>
-                <a href="#formReview"
-                   onclick="addReview('{{ review.comment_user }}', '{{ review.id }}')">Ответить</a>
-                {% for rew in comments.all %}
-                    <div class="media mt-5 editContent">
-                        <a class="pr-3" href="#">
-                            <p><img class="img-article-left" src="{{article.upload.url}}"></p>
-                        </a>
-                        <div class="media-body">
-                            <h5 class="mt-0 editContent">{{rew.comment_user}}</h5>
-                            <p class="mt-2 editContent">{{rew.text}}</p>
-                        </div>
-                    </div>
-                {% endfor %}
             </div>
         </div>
     {% endfor %}
-
-
 {% endif %}
 {% endif %}
 {% endblock content %}

@@ -2,10 +2,15 @@
 
 {% block content %}
 <h1>Удаление публикации</h1>
+<h1>{{object.title}} от {{object.post_time}}</h1>
 <hr>
-<form action="" method="post">
+{% if request.user.id == object.author.id %}
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p>Удаляем "{{ object.title }}"?</p>
     <input type="submit" value="Delete" />
 </form>
+{% else %}
+<h1>Вы не автор поста! </h1>
+{% endif %}
 {% endblock content %}

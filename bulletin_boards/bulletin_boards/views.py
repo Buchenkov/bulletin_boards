@@ -4,6 +4,7 @@ import logging
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 
 from .filters import NewsFilter, PostFilter
@@ -52,6 +53,21 @@ class ArticleList(ListView):
 
     def article(self, request):
         return redirect('/')
+
+
+# class CommentList(ListView):
+#     # Указываем модель, объекты которой мы будем выводить
+#     model = Comment
+#     # Указываем имя шаблона, в котором будут все инструкции о том,
+#     # как именно пользователю должны быть показаны наши объекты
+#     template_name = 'article.html'
+#     # Это имя списка, в котором будут лежать все объекты.
+#     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
+#     context_object_name = 'Comments'
+#     # Поле, которое будет использоваться для сортировки объектов
+#     # ordering = '-post_time'
+#     paginate_by = 10  # количество записей на странице
+
 
 
 # class AddReview(View):
@@ -177,20 +193,20 @@ class ConfirmUser(UpdateView):
 class ProfileView(LoginRequiredMixin, ListView):
     model = Comment
     template_name = 'account/profile.html'
-    context_object_name = 'comments'  # для итерации в profile.html
+    # context_object_name = 'comments'  # для итерации в profile.html
 
-    def get_queryset(self):
-        queryset = Comment.objects.filter(comment_post__author__author_id=self.request()) # .filter(comment_post__author__comment_user_id=self.request.user.id)
-        print('!!! ProfileView  !!! ', queryset)
-        self.filterset = PostFilter(self.request.GET, queryset, request=self.request.user.id)
-        if self.request.GET:
-            return self.filterset.qs
-        return Comment.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['filterset'] = self.filterset
-        return context
+    # def get_queryset(self):
+    #     queryset = Comment.objects.filter(comment_post__author__author_id=self.request()) # .filter(comment_post__author__comment_user_id=self.request.user.id)
+    #     print('!!! ProfileView  !!! ', queryset)
+    #     self.filterset = PostFilter(self.request.GET, queryset, request=self.request.user.id)
+    #     if self.request.GET:
+    #         return self.filterset.qs
+    #     return Comment.objects.none()
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['filterset'] = self.filterset
+    #     return context
 
 #     def get_queryset(self):   # original
 #         queryset = Comment.objects.filter(comment_post__author__author_id=self.request.user.id)

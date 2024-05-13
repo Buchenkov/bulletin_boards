@@ -5,17 +5,17 @@ from django.forms import ClearableFileInput
 from .models import *
 
 
-class ReviewForm(forms.ModelForm):
-    """Форма отзывов"""
-    # captcha = ReCaptchaField()
-
-    class Meta:
-        model = Comment
-        fields = ("comment_user", "text")
-        widgets = {
-            "comment_user": forms.TextInput(attrs={"class": "form-control border"}),
-            "text": forms.Textarea(attrs={"class": "form-control border"})
-        }
+# class ReviewForm(forms.ModelForm):
+#     """Форма отзывов"""
+#     # captcha = ReCaptchaField()
+#
+#     class Meta:
+#         model = Comment
+#         fields = ("comment_user", "text")
+#         widgets = {
+#             "comment_user": forms.TextInput(attrs={"class": "form-control border"}),
+#             "text": forms.Textarea(attrs={"class": "form-control border"})
+#         }
 
 
 class EditForm(forms.ModelForm):

@@ -10,13 +10,32 @@
     <input type="submit" value="Найти">
 </form>
 
-<br><button><a href="/article/profile/">Сбросить фильтр</a></button>
+<br><button><a href="/profile/">Сбросить фильтр</a></button>
 <hr>
 <h4>Все отклики на выбранное объявление:</h4>
 {% if comments %}
-    {% for comment in fcomments %}
+    {% for comment in comments %}
     <p>{{ comment.text }}</p>
     <p>{{ comment.comment_user}}</p>
     {% endfor %}
 {% endif %}
+
+
+<!--!!!!!!! автор - статьи - комменты !!!-->
+{% for comment in article.author.comment_set.all %}
+    <div class="media py-5">
+        <div class="media-body mt-4">
+            <h5 class="mt-0 editContent">
+                {{ comment.comment_user.username }}
+            </h5>
+            <p class="mt-2 editContent">
+                {{ comment.text }}
+            </p>
+        </div>
+    </div>
+{% endfor %}
+
+
+
+
 {% endblock content %}
