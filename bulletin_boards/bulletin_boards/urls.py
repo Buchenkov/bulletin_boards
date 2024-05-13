@@ -23,6 +23,7 @@ from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
     path('', include('django.contrib.auth.urls')),
@@ -31,10 +32,11 @@ urlpatterns = [
     path('article/articles_create/', ArticleCreate.as_view(), name='articles_create'),
     path('articles/<int:pk>/edit', ArticleUpdate.as_view(), name='articles_edit'),
     path('article/<int:pk>/delete', ArticleDelete.as_view(), name='article_delete'),
-    path('<int:pk>/comment/create/', CommentCreate.as_view(), name='comment_create'),
+    path('<int:pk>/comment/create/', CommentCreate.as_view(), name='add_comment'),
     path('signup/', SignUp.as_view(), name='signup'),
     path('confirm/', ConfirmUser.as_view(), name='confirm_user'),
     path('profile/', ProfileView.as_view(), name='profile'),
+    # path("review/<int:pk>/", AddReview.as_view(), name="add_comment"),
 ]
 
 if settings.DEBUG:

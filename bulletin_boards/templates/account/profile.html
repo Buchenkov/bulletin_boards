@@ -7,7 +7,6 @@
 <form action="{% url 'profile' %}" method="post" >
     {% csrf_token %}
     {{ filterset.form.as_p }}
-
     <input type="submit" value="Найти">
 </form>
 
@@ -15,8 +14,9 @@
 <hr>
 <h4>Все отклики на выбранное объявление:</h4>
 {% if comments %}
-    {% for comment in comments %}
+    {% for comment in fcomments %}
     <p>{{ comment.text }}</p>
+    <p>{{ comment.comment_user}}</p>
     {% endfor %}
 {% endif %}
 {% endblock content %}

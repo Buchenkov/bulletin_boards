@@ -1,11 +1,16 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-<h1>Редактирование поста</h1>
+<h1>Редактирование поста: </h1>
+<h1>{{object.title}} от {{object.post_time}}</h1>
 <hr>
+{% if request.user.id == object.author.id %}
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save" />
 </form>
+{% else %}
+<h1>Вы не автор поста! </h1>
+{% endif %}
 {% endblock content %}

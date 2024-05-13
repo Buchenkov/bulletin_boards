@@ -2,7 +2,19 @@ from django.forms import DateTimeInput
 from django_filters import FilterSet, DateTimeFilter, ModelMultipleChoiceFilter, CharFilter, ModelChoiceFilter, \
     ChoiceFilter
 
-from .models import Article
+from .models import Article, Comment
+
+
+class PostFilter(FilterSet):
+    class Meta:
+        model = Comment
+        fields = {
+            'comment_post'
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PostFilter, self).__init__(*args, **kwargs)
+        self.filters['post'].queryset = Article.objects.filter(comment_user__author_id=kwargs['request'])
 
 
 # Создаем свой набор фильтров для модели Product.

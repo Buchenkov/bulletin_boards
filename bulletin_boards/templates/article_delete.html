@@ -1,11 +1,16 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
+{% if request.user.id == object.author.id %}
 <h1>Удаление публикации</h1>
 <hr>
-<form action="" method="post">
+<h1>{{object.title}} от {{object.post_time}}</h1>
+<hr>
+
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p>Удаляем "{{ object.title }}"?</p>
     <input type="submit" value="Delete" />
 </form>
+{% endif %}
 {% endblock content %}

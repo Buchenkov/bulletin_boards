@@ -37,7 +37,7 @@
                 <td>{{ article.category }}</td>
                <td>{{ article.text|truncatewords:15}}</td>
                 <td>{% if article.upload %}
-                        <p><img class="img-article-left" width="180px" src="{{article.upload.url}}" ></p>
+                        <p><a href="{% url 'post' article.pk %}"><img class="img-article-left" width="180px" src="{{article.upload.url}}"> </a></p>
                     {% endif %}
                 </td>
                {% if request.user.is_authenticated %}

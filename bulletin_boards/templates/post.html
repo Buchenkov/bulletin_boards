@@ -25,4 +25,68 @@
 {% else %}
 <h3>"There are no publications!""</h3>
 {% endif %}
+
+ {% if user.is_authenticated %}
+    <hr>
+    <div class="row">
+        <div class="single-form-left">
+            <!-- contact form grid -->
+            <div class="contact-single">
+                <h3 class="editContent">
+                    <span class="sub-tittle editContent">{{article.comment_set.count}}</span>
+                    Оставить отзыв
+                </h3>
+                <form action="{% url 'add_comment' article.id %}" method="post" class="mt-4"
+                      id="formReview">
+                    {%csrf_token%}
+                    <input type="hidden" name="parent" id="contactparent" value="">
+                    <div class="form-group editContent">
+                        <label for="contactcomment" class="editContent">
+                            Ваш комментарий *
+                        </label>
+                        {{form.text}}
+                    </div>
+                    <button type="submit"
+                            class="mt-3 btn btn-success btn-block py-3">
+                        Отправить
+                    </button>
+                </form>
+            </div>
+            <!--  //contact form grid ends here -->
+        </div>
+    </div>
+{% if articles %}
+<td>{{ article.comment.text }}</td>
+<td>{{ article.category }}</td>
+    {% for comment in comments__article %}
+
+        <div class="media py-5">
+
+            <div class="media-body mt-4">
+                <h5 class="mt-0 editContent">
+                    {{ comments.comment_user }}
+                </h5>
+                <p class="mt-2 editContent">
+                    {{ comments.text }}
+                </p>
+                <a href="#formReview"
+                   onclick="addReview('{{ review.comment_user }}', '{{ review.id }}')">Ответить</a>
+                {% for rew in comments.all %}
+                    <div class="media mt-5 editContent">
+                        <a class="pr-3" href="#">
+                            <p><img class="img-article-left" src="{{article.upload.url}}"></p>
+                        </a>
+                        <div class="media-body">
+                            <h5 class="mt-0 editContent">{{rew.comment_user}}</h5>
+                            <p class="mt-2 editContent">{{rew.text}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+
+{% endif %}
+{% endif %}
 {% endblock content %}

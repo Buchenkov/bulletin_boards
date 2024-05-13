@@ -22,7 +22,7 @@
 
 
    <div class="container">
-       <a class="navbar-brand" href="/">{% trans "News" %}</a>
+       <a class="navbar-brand" href="/">Доска объявлений</a>
        <button class="navbar-toggler" type="button" data-toggle="collapse"
                data-target="#navbarResponsive"
                aria-controls="navbarResponsive" aria-expanded="false"
@@ -31,19 +31,16 @@
        </button>
        <div class="collapse navbar-collapse" id="navbarResponsive">
            <ul class="navbar-nav ml-auto">
-               {% if perms.news.add_post or perms.news.delete_post %}
+               {% if user.is_authenticated %}
                <li class="nav-item">
-                   <a class="nav-link" href="/article/articles_create/">{% trans "Articles create" %}</a>
+                   <a class="nav-link" href="/article/articles_create/"> Добавить объявление </a>
                </li>
                {% endif %}
                {% if user.is_authenticated %}
                <li class="nav-item">
-                   <a class="nav-link" href="/subscriptions/">{% trans "Subscriptions" %}</a>
+                   <a class="nav-link" href="/profile/"> Личный кабинет </a>
                </li>
                {% endif %}
-               <li class="nav-item">
-                   <a class="nav-link" href="/search/">{% trans "Search" %}</a>
-               </li>
        </div>
        <div>
             <ul class="nav navbar-nav navbar-right">
@@ -58,7 +55,6 @@
                 </li>
            </ul>
        </div>
-
 </nav>
         <!-- Page content-->
         <div class="container">
@@ -69,13 +65,6 @@
                     <style>
                         body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};}
                     </style>
-
-
-                    {% for model in models %}
-                    <div class="model-class">
-                        {{ model.name }}
-                    </div>
-                    {% endfor %}
 
                    {% block title %}
                     {{ flatpage.title }}
