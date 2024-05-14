@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from .models import *
 
@@ -19,6 +20,7 @@ from .models import *
 
 
 class EditForm(forms.ModelForm):
+    # upload = forms.CharField(widget=CKEditorUploadingWidget())
     class Meta:
         model = Article
         fields = '__all__'  # все пункты

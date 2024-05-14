@@ -16,20 +16,6 @@ class ArticleAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-# @admin.register(Category)
-# class CategoryAdmin(TranslationAdmin):
-#     """Категории"""
-#     list_display = ("name", "url")
-#     list_display_links = ("name",)
-
-
-# class Comment(admin.TabularInline):
-#     """Отзывы на странице фильма"""
-#     model = Comment
-#     extra = 1
-#     readonly_fields = ("comment_user", "comment_post")
-
-
 class ArticleAdmin(admin.ModelAdmin):
     form = ArticleAdminForm
 
@@ -41,13 +27,9 @@ class ArticleAdmin(admin.ModelAdmin):
 # class CategoryAdmin(TranslationAdmin):
 #     model = Category
 #
-#
-# class MyModelAdmin(TranslationAdmin):
-#     model = Post 560
 
 
 # Register your models here.
 admin.site.register(Article, ArticleAdmin)
-# admin.site.register(Article)
 admin.site.register(Comment)
 admin.site.register(User)

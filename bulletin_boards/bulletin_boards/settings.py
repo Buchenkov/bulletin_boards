@@ -78,6 +78,19 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"   #  указывает каталог, в котором хранятся загруженные файлы, внутри MEDIA_ROOT каталога (media/uploads)
+# CKEDITOR_IMAGE_BACKEND = "pillow"
+# CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+#
+# CKEDITOR_CONFIGS = {
+#     'default':
+#         {
+#             'toolbar': 'full',
+#             'width': 'auto',
+#             'extraPlugins': ','.join([
+#                 'codesnippet',
+#             ]),
+#         },
+# }
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
