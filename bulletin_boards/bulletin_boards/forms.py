@@ -23,8 +23,8 @@ class EditForm(forms.ModelForm):
     # upload = forms.CharField(widget=CKEditorUploadingWidget())
     class Meta:
         model = Article
-        fields = '__all__'  # все пункты
-        # fields = ['title', 'text', 'category', 'upload']
+        # fields = '__all__'  # все пункты
+        fields = ['title', 'text', 'category', 'upload']
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название объявления'}),
@@ -38,7 +38,8 @@ class ArticleForm(forms.ModelForm):
     # text = forms.CharField(min_length=20)
     class Meta:
         model = Article
-        fields = '__all__'  # все пункты
+        # fields = '__all__'  # все пункты
+        fields = ['title', 'text', 'category', 'upload']
 
     widgets = {
         'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название объявления'}),

@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
-
-from bulletin_boards import settings
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 
 
 class Article(models.Model):
@@ -20,7 +20,7 @@ class Article(models.Model):
     )
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
-    text = models.TextField()  # !
+    text = RichTextUploadingField()  # !
     category = models.CharField(max_length=20, choices=TYPE, default='tank')
     post_time = models.DateTimeField(auto_now_add=True)  # автоматически добавляемая дата и время создания;
     upload = models.FileField(upload_to='uploads/%Y/%m/%d/', blank=True, default=None, null=True, verbose_name='upload')

@@ -35,7 +35,7 @@
                <td>{{ article.post_time }}</td>
                <td>{{ article.author }}</td>
                 <td>{{ article.category }}</td>
-               <td>{{ article.text|truncatewords:15}}</td>
+               <td>{{ article.text|truncatewords:15|safe}}</td>
                 <td>{% if article.upload %}
                         <p><a href="{% url 'post' article.pk %}"><img class="img-article-left" width="180px" src="{{article.upload.url}}"> </a></p>
                     {% endif %}

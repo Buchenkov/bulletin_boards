@@ -122,12 +122,13 @@ class ArticleCreate(CreateView):  # LoginRequiredMixin, PermissionRequiredMixin,
 
     def form_valid(self, form):
         post = form.save(commit=False)
+        post.author = self.request.user
         post.save()
         return super().form_valid(form)
 
     # def form_valid(self, form):
-    #     # user = RegUser().get(user_id=self.request.user.id), Post.objects.filter(user_id=reg_user.id)
     #     post = form.save(commit=False)
+    #     post.save()
     #     return super().form_valid(form)
 
     def get_success_url(self):
@@ -193,7 +194,7 @@ class ConfirmUser(UpdateView):
 class ProfileView(LoginRequiredMixin, ListView):
     model = Comment
     template_name = 'account/profile.html'
-    # context_object_name = 'comments'  # для итерации в profile.html
+    context_object_name = 'comments'  # для итерации в profile.html
 
     # def get_queryset(self):
     #     queryset = Comment.objects.filter(comment_post__author__author_id=self.request()) # .filter(comment_post__author__comment_user_id=self.request.user.id)

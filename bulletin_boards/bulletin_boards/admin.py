@@ -6,7 +6,7 @@ from .models import *
 
 
 class ArticleAdminForm(forms.ModelForm):
-    upload = forms.CharField(widget=CKEditorUploadingWidget())
+    text = forms.CharField(widget=CKEditorUploadingWidget())
     # """Форма с виджетом ckeditor"""
     # description_ru = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
     # description_en = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())

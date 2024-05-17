@@ -15,27 +15,25 @@
 <h4>Все отклики на выбранное объявление:</h4>
 {% if comments %}
     {% for comment in comments %}
-    <p>{{ comment.text }}</p>
-    <p>{{ comment.comment_user}}</p>
+    <p>{{ comment.text }} - {{ comment.comment_user }}</p>
     {% endfor %}
 {% endif %}
 
+{{ article.request.user.username  }}
 
-<!--!!!!!!! автор - статьи - комменты !!!-->
-{% for comment in article.author.comment_set.all %}
-    <div class="media py-5">
-        <div class="media-body mt-4">
-            <h5 class="mt-0 editContent">
-                {{ comment.comment_user.username }}
-            </h5>
-            <p class="mt-2 editContent">
-                {{ comment.text }}
-            </p>
+
+    {% for comment in article.comment_set.all %}
+        <div class="media py-5">
+            <div class="media-body mt-4">
+                <h5 class="mt-0 editContent">
+                    {{ comment.comment_user.username }}
+                </h5>
+                <p class="mt-2 editContent">
+                    {{ comment.text }}
+                </p>
+            </div>
         </div>
-    </div>
-{% endfor %}
-
-
+    {% endfor %}
 
 
 {% endblock content %}
