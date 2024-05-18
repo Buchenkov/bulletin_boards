@@ -4,8 +4,7 @@
 <h2>Личный кабинет {{ request.user.username }}</h2>
 
 <hr>
-<form action="{% url 'profile' %}" method="post" >
-    {% csrf_token %}
+<form action="" method="get" >
     {{ filterset.form.as_p }}
     <input type="submit" value="Найти">
 </form>
@@ -18,22 +17,6 @@
     <p>{{ comment.text }} - {{ comment.comment_user }}</p>
     {% endfor %}
 {% endif %}
-
-{{ article.request.user.username  }}
-
-
-    {% for comment in article.comment_set.all %}
-        <div class="media py-5">
-            <div class="media-body mt-4">
-                <h5 class="mt-0 editContent">
-                    {{ comment.comment_user.username }}
-                </h5>
-                <p class="mt-2 editContent">
-                    {{ comment.text }}
-                </p>
-            </div>
-        </div>
-    {% endfor %}
 
 
 {% endblock content %}

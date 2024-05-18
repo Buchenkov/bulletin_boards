@@ -14,7 +14,7 @@ class PostFilter(FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(PostFilter, self).__init__(*args, **kwargs)
-        self.filters['post'].queryset = Article.objects.filter(comment_user__author_id=kwargs['request'])
+        self.filters['comment_post'].queryset = Article.objects.filter(author_id=kwargs['request'])
 
 
 # Создаем свой набор фильтров для модели Product.

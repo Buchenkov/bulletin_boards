@@ -196,18 +196,17 @@ class ProfileView(LoginRequiredMixin, ListView):
     template_name = 'account/profile.html'
     context_object_name = 'comments'  # для итерации в profile.html
 
-    # def get_queryset(self):
-    #     queryset = Comment.objects.filter(comment_post__author__author_id=self.request()) # .filter(comment_post__author__comment_user_id=self.request.user.id)
-    #     print('!!! ProfileView  !!! ', queryset)
-    #     self.filterset = PostFilter(self.request.GET, queryset, request=self.request.user.id)
-    #     if self.request.GET:
-    #         return self.filterset.qs
-    #     return Comment.objects.none()
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['filterset'] = self.filterset
-    #     return context
+    def get_queryset(self):   # original
+        queryset = Comment.objects.filter(comment_post__author_id=self.request.user.id)
+        self.filterset = PostFilter(self.request.GET, queryset, request=self.request.user.id)
+        if self.request.GET:
+            return self.filterset.qs
+        return Comment.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        return context
 
 #     def get_queryset(self):   # original
 #         queryset = Comment.objects.filter(comment_post__author__author_id=self.request.user.id)
