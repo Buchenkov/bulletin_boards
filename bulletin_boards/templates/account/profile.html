@@ -14,7 +14,12 @@
 <h4>Все отклики на выбранное объявление:</h4>
 {% if comments %}
     {% for comment in comments %}
-    <p>{{ comment.text }} - {{ comment.comment_user }}</p>
+    <p>{{ comment.text }} - {{ comment.comment_user }}
+
+        <td>
+            <a href="{%url 'comment_delete'  comment.id%}"> Удалить отклик {{comment.id}}</a>
+        </td>
+    </p>
     {% endfor %}
 {% endif %}
 

@@ -32,6 +32,7 @@ urlpatterns = [
     path('article/articles_create/', ArticleCreate.as_view(), name='articles_create'),
     path('articles/<int:pk>/edit', ArticleUpdate.as_view(), name='articles_edit'),
     path('article/<int:pk>/delete', ArticleDelete.as_view(), name='article_delete'),
+    path('comment/<int:pk>/delete', CommentDelete.as_view(), name='comment_delete'),
     path('<int:pk>/comment/create/', CommentCreate.as_view(), name='add_comment'),
     path('signup/', SignUp.as_view(), name='signup'),
     path('confirm/', ConfirmUser.as_view(), name='confirm_user'),

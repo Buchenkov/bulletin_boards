@@ -46,6 +46,12 @@ class UserResponse(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.text[:30]}...'
+
+    def get_absolute_url(self):
+        return reverse('reply_detail', args=[str(self.pk)])
+
 
 # class Author(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
@@ -70,7 +76,7 @@ class Comment(models.Model):
     status = models.BooleanField(default=False, verbose_name='статус')
 
     def __str__(self):
-        return f'{self.comment_user}: {self.text}'
+        return f'{self.comment_user}: {self.text} {self.comment_post}'
 
     def get_absolut_url(self):
         return reverse('article_detail', kwargs={'pk': self.comment_post_id})

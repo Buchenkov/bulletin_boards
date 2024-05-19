@@ -2,11 +2,11 @@ import logging
 
 # import pytz
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
-
+from django.core.mail import send_mail
 from .filters import NewsFilter, PostFilter
 from .forms import ArticleForm, CommentForm, EditForm
 # from .forms import PostForm, ArticleForm
@@ -69,20 +69,32 @@ class ArticleList(ListView):
 #     paginate_by = 10  # количество записей на странице
 
 
-
-# class AddReview(View):
-#     """Отзывы"""
+# class ReplyCreate(LoginRequiredMixin, CreateView):
+#     # form_class = RepleForm
+#     model = UserResponse
+#     # template_name =
 #
-#     def post(self, request, pk):
-#         form = ReviewForm(request.POST)
-#         rev = Article.objects.get(id=pk)
-#         if form.is_valid():
-#             form = form.save(commit=False)
-#             if request.POST.get("parent", None):
-#                 form.parent_id = int(request.POST.get("parent"))
-#             form.movie = rev
-#             form.save()
-#         return redirect(rev.get_absolute_url())
+#     def form_valid(self, form):
+#         reply = form.save(commit=False)
+#         article = get_object_or_404(Article, id=self.kwargs['pk'])
+#         form.instance.user = self.request.user
+#         form.instance.article = article
+#         reply.save()
+#         author = User.objects.get(pk=article.author_id)
+#         send_mail(
+#             subject=f'Отклик на объявление!',
+#             message=f'На ваше объявление: "{article}" был оставлен отклик: "{reply.reple_text}" пользователем {self.request.user}',
+#             from_email=settings.DEFAULT_FROM_EMAIL,
+#             recipient_list=[author.email],
+#         )
+#         return super().form_valid(form)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         article = get_object_or_404(Article, id=self.kwargs['pk'])
+#         context['article'] = article
+#         return context
+
 
 
 class CommentCreate(CreateView):  # LoginRequireMixin,
@@ -94,7 +106,15 @@ class CommentCreate(CreateView):  # LoginRequireMixin,
         comment = form.save(commit=False)
         comment.comment_user = self.request.user
         comment.comment_post_id = self.kwargs['pk']
+        article = get_object_or_404(Article, id=self.kwargs['pk'])
+        author = User.objects.get(pk=article.author_id)
         comment.save()
+        send_mail(
+            subject=f'Отклик на объявление!',
+            message=f'На ваше объявление: "{article.title}" был оставлен отклик: {comment.text} пользователем: {self.request.user}',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[author.email],
+        )
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -126,11 +146,6 @@ class ArticleCreate(CreateView):  # LoginRequiredMixin, PermissionRequiredMixin,
         post.save()
         return super().form_valid(form)
 
-    # def form_valid(self, form):
-    #     post = form.save(commit=False)
-    #     post.save()
-    #     return super().form_valid(form)
-
     def get_success_url(self):
         return reverse_lazy('article')
 
@@ -149,6 +164,22 @@ class ArticleDelete(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('article')
+
+
+class CommentDelete(LoginRequiredMixin, DeleteView):
+    permission_required = ('bulletin_boards.delete_comment',)
+    model = Comment
+    template_name = 'article/comment_delete.html'
+    # success_url = reverse_lazy('article')
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['author'] = Comment.objects.get(pk=self.kwargs.get('pk'))   # .author
+    #     print(context)
+    #     return context
+
+    def get_success_url(self):
+        return reverse_lazy('profile')
 
 
 class ArticleUpdate(LoginRequiredMixin, UpdateView):
@@ -208,9 +239,4 @@ class ProfileView(LoginRequiredMixin, ListView):
         context['filterset'] = self.filterset
         return context
 
-#     def get_queryset(self):   # original
-#         queryset = Comment.objects.filter(comment_post__author__author_id=self.request.user.id)
-#         self.filterset = PostFilter(self.request.GET, queryset, request=self.request.user.id)
-#         if self.request.GET:
-#             return self.filterset.qs
-#         return Comment.objects.none()
+
