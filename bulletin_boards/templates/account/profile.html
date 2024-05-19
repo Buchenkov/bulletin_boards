@@ -15,7 +15,9 @@
 {% if comments %}
     {% for comment in comments %}
     <p>{{ comment.text }} - {{ comment.comment_user }}
-
+        <td>
+            <a href="{%url 'comment_add'  comment.id%}"> Принять отклик {{comment.id}}</a>
+        </td>
         <td>
             <a href="{%url 'comment_delete'  comment.id%}"> Удалить отклик {{comment.id}}</a>
         </td>

@@ -76,7 +76,7 @@ class Comment(models.Model):
     status = models.BooleanField(default=False, verbose_name='статус')
 
     def __str__(self):
-        return f'{self.comment_user}: {self.text} {self.comment_post}'
+        return f'{self.comment_user}: {self.text} {self.comment_post} {self.comment_time} {self.status}'
 
     def get_absolut_url(self):
         return reverse('article_detail', kwargs={'pk': self.comment_post_id})

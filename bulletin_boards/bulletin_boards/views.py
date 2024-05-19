@@ -1,12 +1,12 @@
 import logging
 
 # import pytz
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
-from django.core.mail import send_mail
+
 from .filters import NewsFilter, PostFilter
 from .forms import ArticleForm, CommentForm, EditForm
 # from .forms import PostForm, ArticleForm
@@ -96,7 +96,6 @@ class ArticleList(ListView):
 #         return context
 
 
-
 class CommentCreate(CreateView):  # LoginRequireMixin,
     model = Comment
     template_name = 'post.html'
@@ -106,6 +105,7 @@ class CommentCreate(CreateView):  # LoginRequireMixin,
         comment = form.save(commit=False)
         comment.comment_user = self.request.user
         comment.comment_post_id = self.kwargs['pk']
+        # comment.status = 0
         article = get_object_or_404(Article, id=self.kwargs['pk'])
         author = User.objects.get(pk=article.author_id)
         comment.save()
@@ -133,6 +133,33 @@ class ArticleDetail(DetailView, CommentCreate):
     # context_object_name = 'articles'
 
 
+class CommentAdd(UpdateView, CommentCreate):
+    permission_required = ('bulletin_boards.change_comment',)
+    model = Comment
+    template_name = 'article/comment_add.html'
+    # context_object_name = 'articles'
+
+    # def get_context_data(self, **kwargs):
+    #     response = get_object_or_404(Comment, id=self.kwargs['pk'])
+    #     response.status = 1  # Изменяем статус на "Подтвержден"
+    #     response.save()
+    #     return redirect('account/profile')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['id'] = Comment.objects.get(pk=self.kwargs.get('pk')).id
+        context['status'] = 1
+        print(context['id'], context['status'])
+        return context
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('account/profilee')
+
+
 class ArticleCreate(CreateView):  # LoginRequiredMixin, PermissionRequiredMixin,
     permission_required = ('bulletin_boards.add_article',)
     # raise_exception = True  # вместо перенаправлений, можно генерировать страницу с кодом 403 – доступ запрещен.
@@ -154,6 +181,7 @@ class ArticleDelete(LoginRequiredMixin, DeleteView):
     permission_required = ('bulletin_boards.delete_article',)
     model = Article
     template_name = 'article/article_delete.html'
+
     # success_url = reverse_lazy('article')
 
     def get_context_data(self, **kwargs):
@@ -170,6 +198,7 @@ class CommentDelete(LoginRequiredMixin, DeleteView):
     permission_required = ('bulletin_boards.delete_comment',)
     model = Comment
     template_name = 'article/comment_delete.html'
+
     # success_url = reverse_lazy('article')
 
     # def get_context_data(self, **kwargs):
@@ -227,7 +256,7 @@ class ProfileView(LoginRequiredMixin, ListView):
     template_name = 'account/profile.html'
     context_object_name = 'comments'  # для итерации в profile.html
 
-    def get_queryset(self):   # original
+    def get_queryset(self):  # original
         queryset = Comment.objects.filter(comment_post__author_id=self.request.user.id)
         self.filterset = PostFilter(self.request.GET, queryset, request=self.request.user.id)
         if self.request.GET:
@@ -238,5 +267,3 @@ class ProfileView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
-
-

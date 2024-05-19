@@ -1,0 +1,10 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Принять и опубликовать отклик</h1>
+<hr>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="submit" value="Да!"/>
+</form>
+{% endblock content %}
