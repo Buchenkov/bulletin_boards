@@ -133,31 +133,48 @@ class ArticleDetail(DetailView, CommentCreate):
     # context_object_name = 'articles'
 
 
-class CommentAdd(UpdateView, CommentCreate):
-    permission_required = ('bulletin_boards.change_comment',)
-    model = Comment
-    template_name = 'article/comment_add.html'
-    # context_object_name = 'articles'
+def comment_add(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.status = True  # Изменяем статус на "Подтвержден"
+    print('! ! !', comment)
+    # article = get_object_or_404(Comment, pk=pk)
+    author = User.objects.get(pk=comment.comment_user_id)
+    send_mail(
+        subject=f'Отклик на объявление!',
+        message=f'Ваш отклик: "{comment.text}" на объявление {comment.comment_post.author}: '
+                f'{comment.comment_post.title} - принят!',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[author.email],
+    )
+    comment.save()
+    return redirect('profile')
 
-    # def get_context_data(self, **kwargs):
-    #     response = get_object_or_404(Comment, id=self.kwargs['pk'])
-    #     response.status = 1  # Изменяем статус на "Подтвержден"
-    #     response.save()
-    #     return redirect('account/profile')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['id'] = Comment.objects.get(pk=self.kwargs.get('pk')).id
-        context['status'] = 1
-        print(context['id'], context['status'])
-        return context
-
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('account/profilee')
+# class CommentAdd(UpdateView, CommentCreate):
+#     permission_required = ('bulletin_boards.change_comment',)
+#     model = Comment
+#     template_name = 'article/comment_add.html'
+#     # context_object_name = 'articles'
+#
+#     # def get_context_data(self, **kwargs):
+#     #     response = get_object_or_404(Comment, id=self.kwargs['pk'])
+#     #     response.status = 1  # Изменяем статус на "Подтвержден"
+#     #     response.save()
+#     #     return redirect('account/profile')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['id'] = Comment.objects.get(pk=self.kwargs.get('pk')).id
+#         context['status'] = 1
+#         print(context['id'], context['status'])
+#         return context
+#
+#     def form_valid(self, form):
+#         post = form.save(commit=True)
+#         return super().form_valid(form)
+#
+#     def get_success_url(self):
+#         return reverse_lazy('article')
 
 
 class ArticleCreate(CreateView):  # LoginRequiredMixin, PermissionRequiredMixin,
