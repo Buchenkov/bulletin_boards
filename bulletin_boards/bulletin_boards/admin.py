@@ -7,6 +7,7 @@ from .models import *
 
 class ArticleAdminForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
+
     # """Форма с виджетом ckeditor"""
     # description_ru = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
     # description_en = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
@@ -18,15 +19,6 @@ class ArticleAdminForm(forms.ModelForm):
 
 class ArticleAdmin(admin.ModelAdmin):
     form = ArticleAdminForm
-
-
-# class PostAdmin(admin.ModelAdmin):
-#     fields = ['author', 'title', 'text', 'category', 'post_time', 'upload']
-
-
-# class CategoryAdmin(TranslationAdmin):
-#     model = Category
-#
 
 
 # Register your models here.

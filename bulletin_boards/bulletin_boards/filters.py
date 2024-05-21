@@ -1,6 +1,5 @@
 from django.forms import DateTimeInput
-from django_filters import FilterSet, DateTimeFilter, ModelMultipleChoiceFilter, CharFilter, ModelChoiceFilter, \
-    ChoiceFilter
+from django_filters import FilterSet, DateTimeFilter, ChoiceFilter
 
 from .models import Article, Comment
 
@@ -17,7 +16,7 @@ class PostFilter(FilterSet):
         self.filters['comment_post'].queryset = Article.objects.filter(author_id=kwargs['request'])
 
 
-# Создаем свой набор фильтров для модели Product.
+# Создаем свой набор фильтров для модели.
 # FilterSet, который мы наследуем,
 # должен чем-то напомнить знакомые вам Django дженерики.
 class NewsFilter(FilterSet):
@@ -36,43 +35,7 @@ class NewsFilter(FilterSet):
 
     class Meta:
         model = Article
-        # fields = ['title', 'category', 'added_after']
+
         fields = {
             'title': ['icontains'],
-            # 'category': ['exact'],
-            # 'post_time': ['gt'],
         }
-
-
-
-# class NewsFilter(FilterSet):
-#     title = CharFilter(
-#         lookup_expr='icontains',
-#         field_name='title',
-#         label='Заголовок',
-#     )
-#
-#     category = ModelChoiceFilter(
-#         field_name='category',
-#         lookup_expr='exact',
-#         queryset=Category.objects.all(),
-#         label='Категория',
-#         empty_label='Любая',
-#     )
-#     date = DateTimeFilter(
-#         field_name='post_time',
-#         lookup_expr='gt',
-#         label='Дата',
-#         widget=DateTimeInput(
-#             attrs={'type': 'date'},
-#         ),
-#     )
-#
-#     class Meta:
-#         model = Post
-#         fields = ['title', 'date', 'category']
-
-
-
-
-

@@ -1,26 +1,11 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from .models import *
 
 
-# class ReviewForm(forms.ModelForm):
-#     """Форма отзывов"""
-#     # captcha = ReCaptchaField()
-#
-#     class Meta:
-#         model = Comment
-#         fields = ("comment_user", "text")
-#         widgets = {
-#             "comment_user": forms.TextInput(attrs={"class": "form-control border"}),
-#             "text": forms.Textarea(attrs={"class": "form-control border"})
-#         }
-
-
 class EditForm(forms.ModelForm):
-    # upload = forms.CharField(widget=CKEditorUploadingWidget())
     class Meta:
         model = Article
         # fields = '__all__'  # все пункты
@@ -68,7 +53,7 @@ class ArticleForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        # fields = '__all__'  # все пункты
+
         fields = ['text']
         labels = {
             'text': 'Введите текст отклика'

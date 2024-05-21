@@ -1,6 +1,5 @@
 import logging
 
-# import pytz
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,7 +8,6 @@ from django.views.generic import ListView, CreateView, DetailView, DeleteView, U
 
 from .filters import NewsFilter, PostFilter
 from .forms import ArticleForm, CommentForm, EditForm
-# from .forms import PostForm, ArticleForm
 from .models import *
 
 logger = logging.getLogger(__name__)
@@ -33,7 +31,7 @@ class ArticleList(ListView):
     ordering = '-post_time'
     paginate_by = 10  # количество записей на странице
 
-    # Переопределяем функцию получения списка товаров
+    # Переопределяем функцию получения списка
     def get_queryset(self):
         # Получаем обычный запрос
         queryset = super().get_queryset()
@@ -55,47 +53,6 @@ class ArticleList(ListView):
         return redirect('/')
 
 
-# class CommentList(ListView):
-#     # Указываем модель, объекты которой мы будем выводить
-#     model = Comment
-#     # Указываем имя шаблона, в котором будут все инструкции о том,
-#     # как именно пользователю должны быть показаны наши объекты
-#     template_name = 'article.html'
-#     # Это имя списка, в котором будут лежать все объекты.
-#     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
-#     context_object_name = 'Comments'
-#     # Поле, которое будет использоваться для сортировки объектов
-#     # ordering = '-post_time'
-#     paginate_by = 10  # количество записей на странице
-
-
-# class ReplyCreate(LoginRequiredMixin, CreateView):
-#     # form_class = RepleForm
-#     model = UserResponse
-#     # template_name =
-#
-#     def form_valid(self, form):
-#         reply = form.save(commit=False)
-#         article = get_object_or_404(Article, id=self.kwargs['pk'])
-#         form.instance.user = self.request.user
-#         form.instance.article = article
-#         reply.save()
-#         author = User.objects.get(pk=article.author_id)
-#         send_mail(
-#             subject=f'Отклик на объявление!',
-#             message=f'На ваше объявление: "{article}" был оставлен отклик: "{reply.reple_text}" пользователем {self.request.user}',
-#             from_email=settings.DEFAULT_FROM_EMAIL,
-#             recipient_list=[author.email],
-#         )
-#         return super().form_valid(form)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         article = get_object_or_404(Article, id=self.kwargs['pk'])
-#         context['article'] = article
-#         return context
-
-
 class CommentCreate(CreateView):  # LoginRequireMixin,
     model = Comment
     template_name = 'post.html'
@@ -105,7 +62,6 @@ class CommentCreate(CreateView):  # LoginRequireMixin,
         comment = form.save(commit=False)
         comment.comment_user = self.request.user
         comment.comment_post_id = self.kwargs['pk']
-        # comment.status = 0
         article = get_object_or_404(Article, id=self.kwargs['pk'])
         author = User.objects.get(pk=article.author_id)
         comment.save()
@@ -120,7 +76,6 @@ class CommentCreate(CreateView):  # LoginRequireMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['article_id'] = self.kwargs['pk']
-        # print("INFORM!!!! ", context)
         return context
 
     def get_success_url(self):
@@ -130,14 +85,12 @@ class CommentCreate(CreateView):  # LoginRequireMixin,
 class ArticleDetail(DetailView, CommentCreate):
     model = Article
     template_name = 'post.html'
-    # context_object_name = 'articles'
 
 
 def comment_add(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.status = True  # Изменяем статус на "Подтвержден"
     print('! ! !', comment)
-    # article = get_object_or_404(Comment, pk=pk)
     author = User.objects.get(pk=comment.comment_user_id)
     send_mail(
         subject=f'Отклик на объявление!',
@@ -148,33 +101,6 @@ def comment_add(request, pk):
     )
     comment.save()
     return redirect('profile')
-
-
-# class CommentAdd(UpdateView, CommentCreate):
-#     permission_required = ('bulletin_boards.change_comment',)
-#     model = Comment
-#     template_name = 'article/comment_add.html'
-#     # context_object_name = 'articles'
-#
-#     # def get_context_data(self, **kwargs):
-#     #     response = get_object_or_404(Comment, id=self.kwargs['pk'])
-#     #     response.status = 1  # Изменяем статус на "Подтвержден"
-#     #     response.save()
-#     #     return redirect('account/profile')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['id'] = Comment.objects.get(pk=self.kwargs.get('pk')).id
-#         context['status'] = 1
-#         print(context['id'], context['status'])
-#         return context
-#
-#     def form_valid(self, form):
-#         post = form.save(commit=True)
-#         return super().form_valid(form)
-#
-#     def get_success_url(self):
-#         return reverse_lazy('article')
 
 
 class ArticleCreate(CreateView):  # LoginRequiredMixin, PermissionRequiredMixin,
@@ -216,14 +142,6 @@ class CommentDelete(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'article/comment_delete.html'
 
-    # success_url = reverse_lazy('article')
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['author'] = Comment.objects.get(pk=self.kwargs.get('pk'))   # .author
-    #     print(context)
-    #     return context
-
     def get_success_url(self):
         return reverse_lazy('profile')
 
@@ -233,9 +151,6 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
     form_class = EditForm
     model = Article
     template_name = 'articles_edit.html'
-
-    # fp = Article(file=form.clened_data['data'])
-    # fp.save()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -254,8 +169,6 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
 class ConfirmUser(UpdateView):
     model = User
     context_object_name = 'confirm_user'
-
-    # success_url = '/accounts/login/'
 
     def post(self, request, *args, **kwargs):
         if 'code' in request.POST:

@@ -1,8 +1,8 @@
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
-from ckeditor_uploader.fields import RichTextUploadingField
-from django.conf import settings
 
 
 class Article(models.Model):
@@ -31,38 +31,12 @@ class Article(models.Model):
     def __str__(self):
         return f'author - {self.author}: title - {self.title}'
 
-
     def get_absolute_url(self):
         return reverse('article', args=[str(self.id)])
 
 
 class User(AbstractUser):
     code = models.CharField(max_length=15, blank=True, null=True)
-
-
-class UserResponse(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'{self.text[:30]}...'
-
-    def get_absolute_url(self):
-        return reverse('reply_detail', args=[str(self.pk)])
-
-
-# class Author(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-#
-#     def __init__(self):
-#         return self.user.username
-#
-#     class Meta:
-#         verbose_name = 'автор'
-#         verbose_name_plural = 'авторы'
-#         ordering = ['user_username']
 
 
 class Comment(models.Model):
@@ -85,19 +59,3 @@ class Comment(models.Model):
         verbose_name = 'комментарий'
         verbose_name_plural = 'комментарии'
         ordering = ['id']
-
-# class Subscription(models.Model):
-#     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='subscriptions',)
-#     article = models.ForeignKey(to='Article', on_delete=models.CASCADE, related_name='subscriptions',)
-
-
-# class Category(models.Model):
-#     category_name = models.CharField(max_length=64, unique=True)  # Категории новостей/статей
-#     subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
-#
-#     class Meta:
-#         verbose_name = 'Категория'
-#         verbose_name_plural = 'Категория'
-#
-#     def __str__(self):
-#         return f'{self.category_name}'
