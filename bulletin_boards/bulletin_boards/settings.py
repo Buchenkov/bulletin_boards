@@ -41,9 +41,11 @@ INSTALLED_APPS = [
 
     'bulletin_boards',
     'accounts',
+    # 'subscriptions',
 
     'ckeditor',
     'ckeditor_uploader',
+    # 'ckeditor_skins',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -72,15 +74,15 @@ ROOT_URLCONF = 'bulletin_boards.urls'
 MEDIA_ROOT = BASE_DIR / 'uploads'   # это физический каталог, в котором хранятся файлы
 MEDIA_URL = '/uploads/'   # URL, который мы используем для отправки загруженных файлов клиенту (mysite.com/media/uploads/2020/06/11/04.jpg)
 
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATIC_URL = 'static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # ->  python manage.py collectstatic
-STATICFILES_DIRS = [BASE_DIR / 'static', ]
+STATICFILES_DIRS = [BASE_DIR / 'static', ]   # com
+STATIC_DIR = os.path.join(BASE_DIR, 'static')   # com
 
 CKEDITOR_UPLOAD_PATH = "uploads/"   #  указывает каталог, в котором хранятся загруженные файлы, внутри MEDIA_ROOT каталога (media/uploads)
 # CKEDITOR_IMAGE_BACKEND = "pillow"
 # CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
-#
+# #
 # CKEDITOR_CONFIGS = {
 #     'default':
 #         {
@@ -215,11 +217,9 @@ ADMINS = (
 )
 
 
-# Пример конфигурации ckeditor
 CKEDITOR_CONFIGS = {
     'default': {
-        # 'skin': 'moono',
-        # 'skin': 'office2013',
+        'skin': 'moono',
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']
         ],
@@ -245,42 +245,99 @@ CKEDITOR_CONFIGS = {
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
             {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
             {'name': 'about', 'items': ['About']},
-            '/',  # put this to force next toolbar on new line
+            '/',
             {'name': 'yourcustomtools', 'items': [
-                # put the name of your editor.ui.addButton here
                 'Preview',
                 'Maximize',
                 'Youtube',
             ]},
         ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 291,
-        # 'width': '100%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'toolbar': 'YourCustomToolbarConfig',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
-            # your extra plugins here
+            'uploadimage',
             'div',
             'autolink',
             'autoembed',
             'embedsemantic',
             'autogrow',
-            # 'devtools',
             'widget',
             'lineutils',
             'clipboard',
             'dialog',
             'dialogui',
             'elementspath',
-            # 'youtube',
+            'youtube',
         ]),
     }
 }
+
+# Пример конфигурации ckeditor
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         # 'skin': 'moono',
+#         # 'skin': 'office2013',
+#         'toolbar_Basic': [
+#             ['Source', '-', 'Bold', 'Italic']
+#         ],
+#         'toolbar_YourCustomToolbarConfig': [
+#             {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+#             {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+#             {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+#             {'name': 'forms',
+#              'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+#                        'HiddenField']},
+#             '/',
+#             {'name': 'basicstyles',
+#              'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+#             {'name': 'paragraph',
+#              'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+#                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+#                        'Language']},
+#             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+#             {'name': 'insert',
+#              'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+#             '/',
+#             {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+#             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+#             {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+#             {'name': 'about', 'items': ['About']},
+#             '/',  # put this to force next toolbar on new line
+#             {'name': 'yourcustomtools', 'items': [
+#                 # put the name of your editor.ui.addButton here
+#                 'Preview',
+#                 'Maximize',
+#                 'Youtube',
+#             ]},
+#         ],
+#         'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+#         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+#         # 'height': 291,
+#         # 'width': '100%',
+#         # 'filebrowserWindowHeight': 725,
+#         # 'filebrowserWindowWidth': 940,
+#         # 'toolbarCanCollapse': True,
+#         # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+#         'tabSpaces': 4,
+#         'extraPlugins': ','.join([
+#             'uploadimage', # the upload image feature
+#             # your extra plugins here
+#             'div',
+#             'autolink',
+#             'autoembed',
+#             'embedsemantic',
+#             'autogrow',
+#             # 'devtools',
+#             'widget',
+#             'lineutils',
+#             'clipboard',
+#             'dialog',
+#             'dialogui',
+#             'elementspath',
+#             # 'youtube',
+#         ]),
+#     }
+# }
 
 
 LOGGING = {

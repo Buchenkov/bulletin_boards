@@ -23,7 +23,7 @@
             <a href="{%url 'comment_delete'  comment.id%}"> Удалить отклик {{comment.id}}</a>
         </td>
         {% elif comment.status == True %}
-        Отклик принят!
+        <i>Отклик принят!</i>i>
         {% endif %}
     </p>
     {% endfor %}

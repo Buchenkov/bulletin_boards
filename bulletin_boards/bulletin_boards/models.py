@@ -89,3 +89,15 @@ class Comment(models.Model):
 # class Subscription(models.Model):
 #     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='subscriptions',)
 #     article = models.ForeignKey(to='Article', on_delete=models.CASCADE, related_name='subscriptions',)
+
+
+# class Category(models.Model):
+#     category_name = models.CharField(max_length=64, unique=True)  # Категории новостей/статей
+#     subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
+#
+#     class Meta:
+#         verbose_name = 'Категория'
+#         verbose_name_plural = 'Категория'
+#
+#     def __str__(self):
+#         return f'{self.category_name}'

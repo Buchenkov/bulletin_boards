@@ -38,6 +38,7 @@ urlpatterns = [
     path('signup/', SignUp.as_view(), name='signup'),
     path('confirm/', ConfirmUser.as_view(), name='confirm_user'),
     path('profile/', ProfileView.as_view(), name='profile'),
+    # path('', include('subscriptions.urls')),
     # path("review/<int:pk>/", AddReview.as_view(), name="add_comment"),
 ]
 
